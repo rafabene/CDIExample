@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import demo.domain.Item;
 import demo.domain.ItemRepository;
+import demo.domain.OverSpeedHandlerService;
 import demo.domain.SpeedVerifierService;
 import demo.infrastructure.qualifiers.Example;
 
@@ -24,6 +25,9 @@ public class ItemManager {
 	@Inject
 	private SpeedVerifierService speedVerifierService;
 	
+	@Inject
+	private OverSpeedHandlerService overSpeedHandlerService;
+	
 	public void execute(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		List<Item> items = itemRepository.getAllItems();
@@ -31,6 +35,9 @@ public class ItemManager {
 			fc.addMessage(null, 
 					new FacesMessage("Item Speed: " + item.getSpeed() + "/" + item.getSpeedLimit() + 
 							" - Above Speed Limit: " + speedVerifierService.isSpeedAboveLimit(item)));
+			if (speedVerifierService.isSpeedAboveLimit(item)){
+				overSpeedHandlerService.handle(item);
+			}
 		}
 	}
 }
