@@ -10,13 +10,18 @@ import javax.inject.Inject;
 
 import demo.domain.Item;
 import demo.domain.ItemRepository;
+import demo.infrastructure.qualifiers.Example;
 
 @ManagedBean
 @RequestScoped
 public class ItemManager {
 	
+	private final ItemRepository itemRepository;
+	
 	@Inject
-	private ItemRepository itemRepository;
+	public ItemManager(@Example ItemRepository itemRepository) {
+		this.itemRepository = itemRepository;
+	}
 	
 	public void execute(){
 		FacesContext fc = FacesContext.getCurrentInstance();
