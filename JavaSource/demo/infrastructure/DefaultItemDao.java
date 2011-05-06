@@ -5,7 +5,9 @@ import java.util.List;
 
 import demo.domain.Item;
 import demo.domain.ItemRepository;
+import demo.infrastructure.qualifiers.Example;
 
+@Example
 public class DefaultItemDao implements ItemRepository {
 
 	@Override
