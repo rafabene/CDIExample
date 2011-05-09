@@ -2,18 +2,19 @@ package demo;
 
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import demo.domain.Item;
 import demo.domain.ItemRepository;
+import demo.domain.OverSpeedHandlerService;
 import demo.domain.SpeedVerifierService;
 import demo.infrastructure.qualifiers.Example;
 
-@ManagedBean
+@Named("itemManager")
 @RequestScoped
 public class ItemManager {
 	
@@ -24,6 +25,9 @@ public class ItemManager {
 	@Inject
 	private SpeedVerifierService speedVerifierService;
 	
+	@Inject
+	private OverSpeedHandlerService overSpeedHandlerService;
+	
 	public void execute(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		List<Item> items = itemRepository.getAllItems();
@@ -31,6 +35,9 @@ public class ItemManager {
 			fc.addMessage(null, 
 					new FacesMessage("Item Speed: " + item.getSpeed() + "/" + item.getSpeedLimit() + 
 							" - Above Speed Limit: " + speedVerifierService.isSpeedAboveLimit(item)));
+			if (speedVerifierService.isSpeedAboveLimit(item)){
+				overSpeedHandlerService.handle(item);
+			}
 		}
 	}
 }
