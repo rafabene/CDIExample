@@ -13,6 +13,7 @@ import demo.domain.ItemRepository;
 import demo.domain.OverSpeedHandlerService;
 import demo.domain.SpeedVerifierService;
 import demo.infrastructure.qualifiers.Example;
+import demo.infrastructure.qualifiers.Notifier;
 
 @Named("itemManager")
 @RequestScoped
@@ -26,6 +27,7 @@ public class ItemManager {
 	private SpeedVerifierService speedVerifierService;
 	
 	@Inject
+	@Notifier
 	private OverSpeedHandlerService overSpeedHandlerService;
 	
 	public void execute(){

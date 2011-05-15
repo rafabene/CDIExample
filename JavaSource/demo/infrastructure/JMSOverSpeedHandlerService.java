@@ -2,12 +2,19 @@ package demo.infrastructure;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Observes;
 
 import demo.domain.Item;
 import demo.domain.OverSpeedHandlerService;
 
+@RequestScoped
 public class JMSOverSpeedHandlerService implements OverSpeedHandlerService {
 	
+	
+	public void observeEvent(@Observes Item item){
+		handle(item);
+	}
 
 	@PostConstruct
 	public void openJMSConnection(){
